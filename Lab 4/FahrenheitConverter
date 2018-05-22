@@ -1,0 +1,64 @@
+	
+	
+	.data
+	Val1: .float 5.0
+	Val2: .float 9.0
+	Val3: .float 32.0
+	Val4: .float 273.15
+	ValCelsius: .float 0
+	ValKelvin: .float  0
+	ValFahrenheight: .float 0
+	begn:	.asciz	"Temperature (Fahrenheight): "
+	Cel:	.asciz  "Equivalent Temperature (Celsius): "
+	Kel:	.asciz	"Equivalent Temperature(Kelvin): "
+	newln:	.asciz	"\r\n"
+
+	# Celsius = (Fahrenheit – 32.0) x 5.0 / 9.0 Kelvin = Celsius + 273.15
+	.text
+		li	a7, 4			#system call for print string
+	la	a0, begn
+	ecall
+	
+	li	a7, 6			#system call for reading floating point
+	ecall
+	fmv.s	ft1,fa0	 # Saves user input to ft1
+	
+	fsw f10, ValFahrenheight, t0
+	jal temperatureConverter
+	
+	li a7, 4
+	la a0, newln
+	ecall
+	li a7, 4
+	la a0, Cel
+	ecall
+	flw fa0, ValCelsius, t0
+	li a7, 2
+	ecall
+	li a7, 4
+	la a0, newln
+	ecall
+	li a7, 4
+	la a0, Kel
+	ecall
+	flw fa0, ValKelvin, t0
+	li a7, 2
+	ecall
+	j End
+	
+	temperatureConverter:
+	flw f0, ValFahrenheight, t0
+	flw f1, Val1, t0 # 5
+	flw f2, Val2, t0 # 9
+	flw f3, Val3, t0 # 32
+	flw f4, Val4, t0 # 273.15
+	fsub.s f0, f0, f3
+	fmul.s f0, f0, f1
+	fdiv.s f0, f0, f2
+	fsw f0, ValCelsius, t0
+        fadd.s f0, f0, f4
+	fsw f0, ValKelvin, t0
+	ret
+	End:
+	
+	

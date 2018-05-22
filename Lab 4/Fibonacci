@@ -1,0 +1,39 @@
+.data
+n: .word 35
+.text
+la t0, n
+lw a2, 0(t0) # Store function value n
+jal Fibonacci
+j Exit
+
+Fibonacci:
+
+
+
+li t3, 1
+bge a2, zero, Base2 # Base case 1: n <= 0
+li a0, 0
+j End
+
+Base2:
+bne a2, t3, Recurse # Base case 2: n = 1
+li a0, 1
+j End
+
+Recurse:
+addi sp, sp, -12 # Store n, ra, and return value. 
+addi a2, a2, -1
+sw a2, 0(sp)
+sw ra, 4(sp)
+jal Fibonacci # Fibonacci(n - 1)
+sw a0, 8(sp) # Capture n - 1 return value
+lw a2, 0(sp) 
+addi a2, a2, -1
+jal Fibonacci # Fibonacci (n - 2)
+lw t4, 8(sp)
+add a0, a0, t4 # Fibonacci(n - 2) + Fibonacci (n - 1)
+lw ra, 4(sp) 
+addi sp, sp, 12 # Stack restoration
+End:
+jr ra, 0
+Exit:

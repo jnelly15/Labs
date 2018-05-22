@@ -53,10 +53,25 @@ BEGIN
 		datain_a <= X"01234567";	-- DataIn in hex
 		datain_b <= X"11223344";
 		control  <= "00000";		-- Control in binary (ADD and ADDI test)
-		wait for 20 ns; 			-- result = 0x124578AB  and zeroOut = 0
-
-		-- Add test cases here to drive the ALU implementation
-
+		wait for 50 ns;				-- result = 0x124578AB  and zeroOut = 0 			
+		control <= "00001";             -- Test ADD and ADDI for negative numbers.
+		wait for 50 ns;				-- result = 0xF0011223
+		control <= "00010";		-- Test AND result = 0x01220144
+		wait for 50 ns;				
+		control <= "00011";		-- Test OR result = 0x11237767
+		wait for 50 ns;				
+		datain_a <= X"00004004";  -- Test the shift register
+		control <= "01001"; -- by 1 bits should be 0x00008008
+		wait for 50 ns; 
+		control <= "01010";  -- by 2 bits should be 0x00010010
+		wait for 50 ns; 
+		control <= "01011"; -- by 3 bits should be 0x00020020
+		wait for 50 ns; 
+		control <= "01101"; -- by 1 bits should be 0x00002002
+		wait for 50 ns; 
+		control <= "10000"; -- Test Pass: Result = 0x11223344
+		wait for 50 ns;
+		control <= "11001";
 
 		wait; -- will wait forever
 	END PROCESS;

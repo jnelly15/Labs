@@ -1,0 +1,13 @@
+.text
+li t1, 0x01234567
+li t2, 0x11223344
+add a0, t1, t2
+sub a1, t1, t2
+and a2, t1, t2
+or a3, t1, t2
+li t3, 0x00004004
+slli a4, t3, 1
+slli a5, t3, 2
+slli a6, t3, 3
+srli a7, t3, 1
+slli s2, t2, 1
