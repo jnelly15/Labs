@@ -21,7 +21,7 @@ architecture instrucRAM of InstructionRAM is
    signal i_ram : ram_type;
    signal i_address : std_logic_vector(4 downto 0);
 
-begin
+begin 
 
   RamProc: process(Clock, Reset) is
   begin
